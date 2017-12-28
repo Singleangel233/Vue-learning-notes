@@ -113,8 +113,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 			}
 		}
 	});
-	new tianerExtend().$mount('#tianer');  /*扩展完毕后，需要用Vue里面的$mount方法来直接绑定到指定元素中，
-											其中$mount()中的属性，可以是标签，可以是id，也可以是class，名字*/
+	new tianerExtend().$mount('#tianer');  //扩展完毕后，需要用Vue里面的$mount方法来直接绑定到指定元素中其中$mount()中的属性，可以是标签，可以是id，也可以是class，名字
 </script>
 ```
 于是在body中，直接如下创建，可以得到应有的效果
