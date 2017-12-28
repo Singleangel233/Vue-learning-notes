@@ -35,6 +35,9 @@ Vue-directive:用于配合Vue中给的API定义自己想要的功能<br>
 </script>
 ```
 在script中，我们使用了Vue.directive方法来定义我们绑定的v-tianer，在function中的三个函数的意义分别为：  
--el:指令所绑定的元素，用于直接操作DOM。  
--binding:一个对象，包含很多指令信息（因为v-tianer绑定data中的color，而通过binding.value可以获取到data中的color的值）。  
--v-node:Vue编译形成的一个虚拟节点。最后页面中的改变颜色的颜色为color中的red红色。
+-el:指令所绑定的元素，用于直接操作DOM（实际上该el在本例里指的是id为app的div）。  
+-binding:一个对象，包含很多指令信息，里面有很多属性  
+			binding.name指的是我们v-tianer中的tianer；  
+			binding.value是data中的red；  
+			binding.expression指的是绑定的属性；（因为v-tianer绑定data中的color，而通过binding.value可以获取到data中的color的值）。  
+-v-node:Vue编译形成的一个虚拟节点。最后页面中的改变颜色的颜色为color中的red红色。  
