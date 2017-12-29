@@ -113,7 +113,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 			}
 		}
 	});
-	new tianerExtend().$mount('#tianer');  //扩展完毕后，需要用Vue里面的$mount方法来直接绑定到指定元素中其中$mount()中的属性，可以是标签，可以是id，也可以是class，名字
+	new tianerExtend().$mount('#tianer');  //扩展完毕后，需要用Vue里面的$mount方法来直接绑定到指定元素中其中$mount()中的属性，可以是标签，可以是id，也可以是class名字
 </script>
 ```
 于是在body中，直接如下创建，可以得到应有的效果
@@ -123,4 +123,169 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 	<hr>
 	<div id="tianer"></div>
 </body>
+```
+## 3、Vue-set全局操作：
+Vue.set 的作用就是在构造器外部**操作**构造器内部的数据、属性或者方法。<br>
+在Vue中，如果对数组中对象中的数组进行下标的改动，Vue是无法监听到具体的下标的，本例使用点击按钮调用add()来对数字进行自加<br>
+例：
+```
+<script>
+	function add(){
+		// app.content++;    这是第一种可以实现++的方法
+		// outdata.content++; 这是第二种，虽然只注释了这一句，但是后面一句起不了效果，如果没注释这一句，那么可以起到改变的效果
+		app.arr[1]='ddd';   //直接越过outdata来用app获取到outdata中的arr属性，是不可以的
+	}
+	var outdata={
+		content:1,
+		// goods:20
+		arr:['aaa','bbb','ccc']
+	}
+	var app = new Vue({
+		el:"#app",
+		data:outdata
+	})
+</script>
+```
+在这个时候，使用Vue-set可以起到对数组属性起到改动<br>
+例：
+```
+<script>
+	function add(){
+		// app.content++;
+		// outdata.content++;
+		// app.arr[1]='ddd';
+		Vue.set(app.arr,1,'ddd'); //这样改动之后就可以改变app.arr[1]的值了
+	}
+	var outdata={
+		content:1,
+		// goods:20
+		arr:['aaa','bbb','ccc']
+	}
+	var app = new Vue({
+		el:"#app",
+		data:outdata
+	})
+</script>
+```
+## 4、Vue的生命周期：
+Vue一共有十个生命周期函数，我们可以在这十个生命周期函数中，操作数据和改变内容。
+例：
+```
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			content:1
+		},
+		methods:{
+			add:function(){
+				this.content++;
+			}
+		}
+	beforeCreate: function() {
+		console.log('1-beforeCreate 初始化之前');
+	},
+	created: function() {
+		console.log('2-created 创建完成');
+	},
+	beforeMount: function() {
+		console.log('3-beforeMount 挂载之前');
+	},
+	mounted: function() {
+		console.log('4-mounted 被挂载之后'); //载入页面时候1-4都会出现
+	},
+	beforeUpdate: function() {
+		console.log('5-beforeUpdate 数据更新前'); //点击add按钮后出现在控制台
+	},
+	updated: function() {
+		console.log('6-updated 被更新后'); //点击add按钮后出现在控制台
+	},
+	activated: function() {
+		console.log('7-activated');
+	},
+	deactivated: function() {
+		console.log('8-deactivated');
+	},
+	beforeDestroy: function() {
+		console.log('9-beforeDestroy 销毁之前');
+	},
+	destroyed: function() {
+		console.log('10-destroyed 销毁之后')
+	}
+	})
+</script>
+```
+在body中设置好一个button用于销毁：<br>
+例：
+```
+<body>
+	<div id="app"><p>{{content}}</p>
+	<button @click="add">add</button>
+	</div>
+	<button onclick="app.$destroy()">destroy</button> <!-- 注意这个是放在了绑定的app之外执行，里面外面都可以 -->
+</body>
+```
+当点击destory按钮后，则会在控制台输出第九个和第十个生命周期。
+
+## 5、Vue的template模板
+Vue的template有四种，其中有一种是在Vue-cli里面出现的，现在学习下面三种 <br>
+第一种(在作用域对象里面写，适合小点的模板形式)：例：
+```
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			message:233
+		},
+		template:`  //注意要有``号来包裹
+			<h2 style="color:red">选项模板</h2>
+		`
+	})
+</script>
+```
+第二种(在body里面写template并且在作用域对象里面注明，适合直接制作好的):例：
+```
+<body>
+	<div id="app"><p>{{message}}</p></div>
+	<template id="dd2">
+		<h2 style="color: red">我是template标签模板</h2>
+	</template>
+</body>
+</html>
+<script src="./vue.js"></script>
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			message:233
+		},
+		template:"#dd2"		//注明了对应的表情id
+	})
+</script>
+```
+第三种(类似于js中的template模板，创建一个新的script标签来写,好处就是可以进行外部引用了)：例：
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Vue的template模板</title>
+</head>
+<body>
+	<div id="app"><p>{{message}}</p></div>
+<script type="x-template" id="dd3">  <!-- 这个x-template是专门要写表示模板的 -->
+	<h2 style="color: red">我是script标签模板</h2> 
+</script>
+</body>
+</html>
+<script src="./vue.js"></script>
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			message:233
+		},
+		template:"#dd3"		//在这边引用
+	})
+</script>
 ```
