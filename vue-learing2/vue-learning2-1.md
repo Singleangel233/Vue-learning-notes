@@ -244,7 +244,7 @@ Vue的template有四种，其中有一种是在Vue-cli里面出现的，现在�
 </script>
 ```
 第二种(在body里面写template并且在作用域对象里面注明，适合直接制作好的):例：
-```javascript
+```html
 <body>
 	<div id="app"><p>{{message}}</p></div>
 	<template id="dd2">
