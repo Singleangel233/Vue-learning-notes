@@ -3,7 +3,7 @@
 Vue-directive:用于配合Vue中给的API定义自己想要的功能<br>
 例：用Vue-directive自定一个改变颜色为红色的功能v-tianer(v-是命名的方式) <br>	
 在body中：
-```javascript
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +80,7 @@ Vue.directive('tianer',{
 解绑（unbind）的例子：<br>
 在作用域的外边写一个按钮，用于解除绑定<br>
 在body中：
-```javascript
+```html
 <body>
 	<div id="app">
 		<div v-tianer="color">改变颜色</div>
@@ -117,7 +117,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 </script>
 ```
 于是在body中，直接如下创建，可以得到应有的效果
-```javascript
+```html
 <body>
 	<h1>Vue-extend扩展实例构造器</h1>
 	<hr>
@@ -217,7 +217,7 @@ Vue一共有十个生命周期函数，我们可以在这十个生命周期函�
 ```
 在body中设置好一个button用于销毁：<br>
 例：
-```javascript
+```html
 <body>
 	<div id="app"><p>{{content}}</p>
 	<button @click="add">add</button>
@@ -259,12 +259,12 @@ Vue的template有四种，其中有一种是在Vue-cli里面出现的，现在�
 		data:{
 			message:233
 		},
-		template:"#dd2"		//注明了对应的表情id
+		template:"#dd2"		//注明了对应的标签id
 	})
 </script>
 ```
 第三种(类似于js中的template模板，创建一个新的script标签来写,好处就是可以进行外部引用了)：例：
-```javascript
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
