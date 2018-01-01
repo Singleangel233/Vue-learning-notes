@@ -3,7 +3,7 @@
 Vue-directive:用于配合Vue中给的API定义自己想要的功能<br>
 例：用Vue-directive自定一个改变颜色为红色的功能v-tianer(v-是命名的方式) <br>	
 在body中：
-```
+```javascript
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +20,7 @@ Vue-directive:用于配合Vue中给的API定义自己想要的功能<br>
 ```
 我们在div中，绑定了我们自己设置的v-tianer <br>	
 在script中：
-```
+```javascript
 <script>
 	Vue.directive('tianer',function(el,binding,vnode){
 		el.style='color:'+binding.value;  //js中的style方法调用
@@ -56,7 +56,7 @@ Vue-directive:用于配合Vue中给的API定义自己想要的功能<br>
 4. componentUpdate：被绑定元素在模板完成一次更新周期（比如更新完成时）时调用。<br>
 5. unbind：只调用一次，在于元素解绑时候调用。<br>
 例：尝试在script中输出五个生命周期<br>
-```
+```javascript
 Vue.directive('tianer',{
 		bind:function(el,binding){//被绑定
 		     console.log('1 - bind');
@@ -80,7 +80,7 @@ Vue.directive('tianer',{
 解绑（unbind）的例子：<br>
 在作用域的外边写一个按钮，用于解除绑定<br>
 在body中：
-```
+```javascript
 <body>
 	<div id="app">
 		<div v-tianer="color">改变颜色</div>
@@ -102,7 +102,7 @@ function unbinde(){
 Vue-extend简单来说可以构造自己标签，并且为其进行自己的定义，经常用于配合Vue-component用于生成组件实例，并且挂载到自定义元素上。<br>
 例：用Vue-extend来构建一个自己的tianer标签，tianer标签里可以展示自己特定的文字和拥有超链接功能：<br>
 首先在script中构造：
-```
+```javascript
 <script type="text/javascript">
 	var tianerExtend = Vue.extend({  //使用Vue.extend来扩展实例
 		template:"<p><a :href='tianerUrl'>{{textName}}</a></p>", //加入template属性，并且赋予其属性值，同时利用v-bind来绑定数据
@@ -117,7 +117,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 </script>
 ```
 于是在body中，直接如下创建，可以得到应有的效果
-```
+```javascript
 <body>
 	<h1>Vue-extend扩展实例构造器</h1>
 	<hr>
@@ -128,7 +128,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 Vue.set 的作用就是在构造器外部**操作**构造器内部的数据、属性或者方法。<br>
 在Vue中，如果对数组中对象中的数组进行下标的改动，Vue是无法监听到具体的下标的，本例使用点击按钮调用add()来对数字进行自加<br>
 例：
-```
+```javascript
 <script>
 	function add(){
 		// app.content++;    这是第一种可以实现++的方法
@@ -148,7 +148,7 @@ Vue.set 的作用就是在构造器外部**操作**构造器内部的数据、�
 ```
 在这个时候，使用Vue-set可以起到对数组属性起到改动<br>
 例：
-```
+```javascript
 <script>
 	function add(){
 		// app.content++;
@@ -170,7 +170,7 @@ Vue.set 的作用就是在构造器外部**操作**构造器内部的数据、�
 ## 4、Vue的生命周期：
 Vue一共有十个生命周期函数，我们可以在这十个生命周期函数中，操作数据和改变内容。
 例：
-```
+```javascript
 <script>
 	var app = new Vue({
 		el:"#app",
@@ -217,7 +217,7 @@ Vue一共有十个生命周期函数，我们可以在这十个生命周期函�
 ```
 在body中设置好一个button用于销毁：<br>
 例：
-```
+```javascript
 <body>
 	<div id="app"><p>{{content}}</p>
 	<button @click="add">add</button>
@@ -230,7 +230,7 @@ Vue一共有十个生命周期函数，我们可以在这十个生命周期函�
 ## 5、Vue的template模板
 Vue的template有四种，其中有一种是在Vue-cli里面出现的，现在学习下面三种 <br>
 第一种(在作用域对象里面写，适合小点的模板形式)：例：
-```
+```javascript
 <script>
 	var app = new Vue({
 		el:"#app",
@@ -244,7 +244,7 @@ Vue的template有四种，其中有一种是在Vue-cli里面出现的，现在�
 </script>
 ```
 第二种(在body里面写template并且在作用域对象里面注明，适合直接制作好的):例：
-```
+```javascript
 <body>
 	<div id="app"><p>{{message}}</p></div>
 	<template id="dd2">
@@ -264,7 +264,7 @@ Vue的template有四种，其中有一种是在Vue-cli里面出现的，现在�
 </script>
 ```
 第三种(类似于js中的template模板，创建一个新的script标签来写,好处就是可以进行外部引用了)：例：
-```
+```javascript
 <!DOCTYPE html>
 <html lang="en">
 <head>
