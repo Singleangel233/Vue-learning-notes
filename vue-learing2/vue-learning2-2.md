@@ -60,7 +60,7 @@ var app = new Vue({
 	</div>
 </body>
 ```
-要注意之一：这里用了v-bind来绑定Vue对象选项里的message，实际上也可以直接<angel world="hevan"></angel>这样书写<br>
+要注意之一：这里用了v-bind来绑定Vue对象选项里的message，实际上也可以直接```<angel world="hevan"></angel>```这样书写<br>
 要注意之二：如果属性名在标签里用了-写法（例如font-size），那么props里的数组的字符串必须写 'fontSize'，因为Vue识别不了-。<br>
 
 ### 6-3构造器外部写组件以及父子组件
