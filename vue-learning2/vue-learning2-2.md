@@ -9,15 +9,15 @@ Vue的component（组件）的作用可以新生成自定义的标签，也可�
 例：在script中：
 ```javascript
 <script>
-	Vue.component("tianer", { //全局声明的时候，不加s，格式为Vue.component()，里面包含标签名字（字符串），还有一个对象；
+	Vue.component("tianer", { 		//全局声明的时候，不加s，格式为Vue.component()，里面包含标签名字（字符串），还有一个对象；
 		template:`<h3>这是一个全局组件<h3>`
-	});//全局变量，放在Vue对象外声明使用的
+	});								//全局变量，放在Vue对象外声明使用的
 	var app = new Vue({
 		el:"#app",
 		data:{
 			message:233
 		},
-		components:{ //局部声明的时候，这个地方要加S，因为可能包含多个要声明的组件
+		components:{ 				//局部声明的时候，这个地方要加S，因为可能包含多个要声明的组件
 			"angel":{
 				template:`<h3 style="color:pink">这是一个局部组件<h3>` //格式为对象的格式，属性名+属性值，这是局部的变量，放在Vue对象内部声明使用的
 			}
@@ -35,6 +35,7 @@ Vue的component（组件）的作用可以新生成自定义的标签，也可�
 	</div>
 </body>
 ```
+
 ### 6-2设置组件标签内部属性
 当创建好一个想要的标签组件之后，组件里面的属性可以自己定义,要利用components属性下的props<br>
 例如定义一个angel标签里面的world属性（在script中）：
@@ -115,6 +116,7 @@ var app = new Vue({
 	</div>
 </body>
 ```
+
 ### 6-4改变对应的标签属性产生不同的效果
 现在来创建几个外部组件，然后通过改变属性来达到改变标签内容
 例（在script中）：

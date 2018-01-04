@@ -106,7 +106,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 <script type="text/javascript">
 	var tianerExtend = Vue.extend({  //使用Vue.extend来扩展实例
 		template:"<p><a :href='tianerUrl'>{{textName}}</a></p>", //加入template属性，并且赋予其属性值，同时利用v-bind来绑定数据
-		data:function(){
+		data:function(){ //注意这里的data跟构造器里面不一样，后面跟的是function
 			return{
 				textName:'天儿',
 				tianerUrl:"https://github.com/Singleangel233"
@@ -189,6 +189,10 @@ Vue一共有十个生命周期函数，我们可以在这十个生命周期函�
 		console.log('2-created 创建完成');
 	},
 	beforeMount: function() {
+	
+
+
+
 		console.log('3-beforeMount 挂载之前');
 	},
 	mounted: function() {
