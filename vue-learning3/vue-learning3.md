@@ -319,3 +319,50 @@ mixins一般的两种用途：<br>
 </script>
 ```
 最后得出的结论为：**全局混入先执行，混入再执行，最后是原生执行**
+
+## 6、extends选项
+实际上extends选项跟mixins选项很类似，但是extends选项主要是对外部创建的对象进行扩展。<br>
+例，在外部创建一个对象，在控制台输出数据，在Vue作用域里面用extends调用：<br>
+```javascript
+<script>
+	var extendsObj = {
+		updated:function(){
+			console.log("我是扩展的update"); //创建一个对象，并且调用钩子函数输出数据
+		}
+	};
+	var app = new Vue({
+		el:"#app",
+		data:{
+			num:1
+		},
+		methods:{
+			add:function(){
+				console.log("我是原生的方法"); //这里新增一个输出，来对比extends的执行快慢
+				this.num++;
+			}
+		},
+		updated:function(){
+			console.log("我是原生的update");
+		},
+		extends:extendsObj  //在Vue构造器里面调用，注意这里是直接调用，不像mixins调用的格式为数组
+	})
+</script>
+```
+由网页的控制台输出得到总结：<br>
+执行顺序由快到慢依次为：原生的方法，原生的update，扩展的update（比mixins慢）<br>
+
+## 7、delimiters选项
+这个选项可以更改插值的样式，例如默认插值为{{num}}，通过设置delimiters选项可以更改其样式<br>
+例，将其更改为${num}这种样式：<br>
+在script中：
+```javascript
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			num:233
+		},
+		delimiters:['${','}']  //注意这里的格式，格式为两部分，再用数组的包裹
+	});
+</script>
+```
