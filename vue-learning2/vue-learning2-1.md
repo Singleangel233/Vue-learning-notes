@@ -91,7 +91,7 @@ Vue.directive('tianer',{
 ```
 在script中，使用原生的方式，创建unbind函数(放在vue实例化对象之外单独创建)：<br>
 ```
-function unbinde(){
+function unbind(){
 		app.$destroy();
 	}
 ```
