@@ -107,7 +107,7 @@ Vue-extend简单来说可以构造自己标签，并且为其进行自己的定�
 	var tianerExtend = Vue.extend({  //使用Vue.extend来扩展实例
 		template:"<p><a :href='tianerUrl'>{{textName}}</a></p>", //加入template属性，并且赋予其属性值，同时利用v-bind来绑定数据
 		data:function(){ //注意这里的data跟构造器里面不一样，后面跟的是function
-			return{
+			return{   //注意这里有个return
 				textName:'天儿',
 				tianerUrl:"https://github.com/Singleangel233"
 			}
