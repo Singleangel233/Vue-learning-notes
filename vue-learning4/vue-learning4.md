@@ -244,4 +244,184 @@
 </body>
 ```
 2.$once() <br>
-这个方法类似于on，但是只执行一次<br>
+这个方法类似于on，但是只执行一次，也要配合$emit()函数来配合使用<br>
+例，声明一个reduceOnce方法，只执行一次：<br>
+在script中：
+```javasctipt
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			message:1
+		},
+		methods:{
+			add:function(){
+				this.message++;
+			}
+		}
+	});
+	app.$on("reduce",function(){
+		console.log("reduce已经调用");
+		this.message--;
+	});
+	app.$once("reduceOnce",function(){
+		console.log("reduceOnce已经调用,只调用一次");  //参数类型跟on相似，也是方法名字和函数具体内容
+		this.message--;
+	})
+	function reduce(){
+		app.$emit('reduce');
+	};
+	function reduceOnce(){
+		app.$emit("reduceOnce");  //然后要单独声明reduceOnce()函数，并且配合$emit()函数来使用
+	};
+</script>
+```
+在html中：
+```html
+<body>
+	<h1>实例事件</h1>
+	<hr>
+	<div id="app">
+		<p>{{message}}</p>
+		<p><button @click="add">add</button></p>
+	</div>
+	<p><button onclick="reduce()">reduce</button></p>
+	<p><button onclick="reduceOnce()">reduceOnce</button></p>
+</body>
+```
+点击reduceOnce按钮后会显示对应的内容<br>
+3.$off() <br>
+这个方法是用于关闭某个函数的功能， <br>
+例，使用$off()来关闭reduce()的功能：<br>
+在script中：
+```javasctipt
+<script>
+	var app = new Vue({
+		el:"#app",
+		data:{
+			message:1
+		},
+		methods:{
+			add:function(){
+				this.message++;
+			}
+		}
+	});
+	app.$on("reduce",function(){
+		console.log("reduce已经调用");
+		this.message--;
+	});
+	app.$once("reduceOnce",function(){
+		console.log("reduceOnce已经调用,只调用一次");
+		this.message--;
+	})
+	function reduce(){
+		app.$emit('reduce');
+	};
+	function reduceOnce(){
+		app.$emit("reduceOnce");
+	}
+	function off(){
+		app.$off("reduce");
+		console.log("已经关闭了reduce事件，已经不起任何作用了"); //注意格式
+	}
+</script>
+```
+在html中：<br>
+```html
+<body>
+	<h1>实例事件</h1>
+	<hr>
+	<div id="app">
+		<p>{{message}}</p>
+		<p><button @click="add">add</button></p>
+	</div>
+	<p><button onclick="reduce()">reduce</button></p>
+	<p><button onclick="reduceOnce()">reduceOnce</button></p>
+	<p><button onclick="off()">off</button></p> //在外部创建了一个button绑定了off()事件
+</body>
+```
+点击按钮后就会取消reduce按钮绑定的事件。<br>
+
+### 4-4、内置组件slot
+slot组件是用于标签的扩展，用于扩展模板组件的内容，使用slot可以给自定义组件传递内容，组件接受内容并输出<br>
+例如我们首先定义一个自定义的标签tianer：<br>
+```html
+<body>
+	<h1>slot content extend demo</h1>
+	<hr>
+	<div id="app">
+		<tianer>
+		</tianer>
+	</div>
+</body>
+
+```
+然后定义一个模板（template），使用在html中定义的方式：<br>
+```html
+<body>
+	<h1>slot content extend demo</h1>
+	<hr>
+	<div id="app">
+		<tianer>
+		</tianer>
+	</div>
+</body>
+<template id="abc">
+	<div>
+		<p>名字：</p>
+		<p>博客地址：</p>
+		<p>职位：</p>
+	</div>
+</template>
+```
+然后在script的Vue构造器中创建组件，绑定该模板内容，并且创建一个存有数据的angelData对象<br>
+在script中：
+```javascript
+<script>
+	var tianer = {
+		template:"#abc"   //声明tianer变量，绑定到模板abc
+	}
+	var app = new Vue({
+		el:"#app",
+		data:{
+			message:233,
+			angelData:{
+				myName:"天儿",
+				myUrl:"https://github.com/Singleangel233",
+				myWork:"web-front"
+			}
+		},
+		components:{
+			"tianer":tianer  //将tianer变量绑定到"tianer"字符串中，这样在组件里绑定即可用标签的形式使用
+		}
+	});
+</script>
+```
+为了让angelData中的数据能够显示到模板中，则需要使用slot组件。<br>
+使用的方式为：在tianer标签里创建好对应想显示的标签，然后绑定slot展现的内容，例：<br>
+```html
+<body>
+	<h1>slot content extend demo</h1>
+	<hr>
+	<div id="app">
+		<tianer>
+			<span slot="myName">{{angelData.myName}}</span>
+			<span slot="myUrl">{{angelData.myUrl}}</span>
+			<span slot="myWork">{{angelData.myWork}}</span>
+		</tianer>
+	</div>
+</body>
+```
+然后在模板中使用slot标签，然后让slot标签属性中name的属性值指向对应在tianer标签里绑定的slot内容。<br>
+例：<br>
+```html
+<template id="abc">
+	<div>
+		<p>名字：<slot name="myName"></slot></p>
+		<p>博客地址：<slot name="myUrl"></slot></p>
+		<p>职位：<slot name="myWork"></slot></p>
+	</div>
+</template>
+```
+这时打开页面，模板就会展现对应的内容，也可以直接更改tianer标签中的span标签的内容。<br>
