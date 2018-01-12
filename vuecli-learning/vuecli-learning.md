@@ -120,7 +120,7 @@ new Vue({    //熟悉的构造器
 })
 ```
 ### 3、app.vue文件的理解
-```javascript
+```html
 <template>  
   <div id="app">
     <img src="./assets/logo.png">
