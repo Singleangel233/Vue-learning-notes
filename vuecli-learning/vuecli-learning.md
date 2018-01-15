@@ -5,6 +5,8 @@ Vue-cli是vue官方出品的一个构建项目文件结构的脚手架，使用v
 **1：首先在控制台安装vuecli，在命令行输入指令安装(全局安装) <br>**
 ```npm install vue-cli -g```
 
+**注意：安装完成后，检查Vue-cli的版本，在命令行里输入** <br>
+```vue -V```
 
 **2：初始化项目，在命令行里执行<br>**
 ```vue init <template-name> <project-name>```
@@ -79,7 +81,7 @@ Vue-cli是vue官方出品的一个构建项目文件结构的脚手架，使用v
 #### package.json 
 package.json文件是项目根目录下的一个文件，定义该项目开发所需要的各种模块以及一些项目配置信息（如项目名称、版本、描述、作者等）。<br>
 
-**package.json 里的scripts字段,**这个字段定义了你可以用npm运行的命令。在开发环境下，在命令行工具中运行npm run dev 就相当于执行 node build/dev-server.js  .也就是开启了一个node写的开发行建议服务器。由此可以看出script字段是用来指定npm相关命令的缩写。<br>
+package.json 里的**scripts字段**,这个字段定义了你可以用npm运行的命令。在开发环境下，在命令行工具中运行npm run dev 就相当于执行 node build/dev-server.js  .也就是开启了一个node写的开发行建议服务器。由此可以看出script字段是用来指定npm相关命令的缩写。<br>
 
 **dependencies字段和devDependencies字段** <br>
 
