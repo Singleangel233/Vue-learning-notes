@@ -253,3 +253,169 @@ export default new Router({
 
 **总结：**<br>
 使用子路由可以实现一个主模块下附带多个子模块，然后可以方便地设计界面，比如某个专题下的各类子页面。
+
+## 6.3、参数传递
+参数传递一般是业务中的基础需求，然后我们需要一些参数传递才能达到目的。<br>
+
+###第一种：使用name来传递参数
+如果需要传递参数，那么首先可以在index.js配置name属性的属性值。
+例，在index中配置好HelloWorld组件的name值：<br>
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import hi from '@/components/hi'
+import hi1 from '@/components/hi1'
+import hi2 from '@/components/hi2'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',   //注意这里name的值是给了的
+      component: HelloWorld
+    },
+    {
+    	path:'/hi',
+    	component:hi,
+    	children:[
+    	{path:'/',name:'hi',component:hi},
+    	{path:'hi1',name:'hi下的hi1',component:hi1},
+    	{path:'hi2',name:'hi下的hi2',component:hi2}]
+    }
+  ]
+})
+```
+然后在app.vue文件中，使用标签配置插值来引用：<br>
+```vue
+<template>
+  <div id="app">
+    <img src="./assets/logo.png">
+    <div>
+      <router-link to="/">首页</router-link>  |
+      <router-link to="/hi">hi页面</router-link>  |
+      <router-link to="/hi/hi1">hi页面1</router-link>  |
+      <router-link to="/hi/hi2">hi页面2</router-link>
+    </div>
+    <p>{{ $route.name}}</p>   //配合引用的关键，使用$route.name可以获取到index.js中的name属性
+    <router-view/>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+```
+关键点：配合{{$route.name}}这个规定的形式来得到name值，从而获取到name值，写法可以放到外面。<br>
+
+**如果有子路由的情况** <br>
+如果一个路由是有子路由的话，那么它的name值不能单独写出，需要在声明的路由和子路由中添加name值来表示。
+例，在index.js中：
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import hi from '@/components/hi'
+import hi1 from '@/components/hi1'
+import hi2 from '@/components/hi2'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: HelloWorld
+    },
+    {
+    	path:'/hi',
+    	component:hi,
+    	children:[
+    	{path:'/',name:'hi',component:hi},
+    	{path:'hi1',name:'hi下的hi1',component:hi1},
+    	{path:'hi2',name:'hi下的hi2',component:hi2}]   //这里是声明的子路由，然后在子路由中表明name值
+    }
+  ]
+})
+```
+
+###第二种：修改router-link标签来传递值
+这种方法是修改了```<router-link></router-link>```标签中的属性。<br>
+例，我们要点击hi1链接中，传递一个userName和id的值。<br>
+在App.vue中：<br>
+```vue
+<template>
+  <div id="app">
+    <img src="./assets/logo.png">
+    <div>
+      <router-link to="/">首页</router-link>  |
+      <router-link to="/hi">hi页面</router-link>  |
+      <router-link :to="{name:'hi下的hi1',params:{userName:'tianer',id:'233'}}">hi页面1</router-link>  | //注意这里面的格式
+      <router-link to="/hi/hi2">hi页面2</router-link>
+    </div>
+    <p>{{ $route.name}}</p>
+    <router-view/>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+```
+在router-link标签中，使用了v-bind绑定了标签中的属性to，然后值为对象，对象里面的属性有name和params，其中params的格式也为对象，可以传多个值。<br>
+设定好params里面的值后，然后注明userName和id，即可表明是传递的值。<br>
+
+然后在hi.vue中的template中使用插值的形式插入进去要传递的值。<br>
+例，在hi.vue中：<br>
+```vue
+<template>
+	<div>
+		<h2>{{message}}-{{$route.params.userName}}-{{$route.params.id}}</h2>  //注意插值的格式
+		<router-view/>	
+	</div>
+</template>
+<script>
+	export default{
+		name:'hi1',
+		data(){
+			return{
+				message:"It's hi1 page"
+			}
+		}
+	}
+</script>
+<style>
+	
+</style>
+```
+要注意插值的格式，是$route.params.属性名。<br>
+这样在运行中，点击hi1链接后，会出现传递的值的具体内容，并且出现在页面中。<br>
