@@ -421,3 +421,272 @@ export default {
 这样在运行中，点击hi1链接后，会出现传递的值的具体内容，并且出现在页面中。<br>
 
 ## 6-4、单页面多路由区操作
+使用这种方式，可以在同一页面显示多个页面，并且可以根据传的值来控制多路由。<br>
+例，我们要实现在一个页面显示多个页面的内容，首先在App.vue中使用router-view标签。<br>
+在App.vue中：<br>
+```vue
+<template>
+  <div id="app">
+    <img src="./assets/logo.png">
+    <router-view></router-view>
+    <router-view name="left"></router-view>
+    <router-view name="right"></router-view>  //这边使用了router-view标签，并且赋予了name值
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+
+```
+引入router-view标签完毕后，然后在index.js中引用组件，声明left和right所绑定的组件的名字。<br>
+例，在index.js中：<br>
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import hi1 from '@/components/hi1'
+import hi2 from '@/components/hi2'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      components:{
+      	default:HelloWorld,
+      	left:hi1,
+      	right:hi2    //要注意声明的格式，写法为components，格式为对象
+      }
+    }
+  ]
+})
+
+```
+在routes里面引用完毕后，则再声明一下left和right对应的组件名字，要注意声明一个default。接着还要注意在顶部import一下编写好的hi1和hi2。<br>
+
+
+编写好的hi1.vue: <br>
+```vue
+<template>
+	<div>
+		<h2>{{message}}</h2>	
+	</div>
+</template>
+<script>
+	export default{
+		name:'hi1',
+		data(){
+			return{
+				message:"It's hi1 page"
+			}
+		}
+	}
+</script>
+<style scoped>   //注意这边用了scoped来只在当前页展示效果
+	div {
+		float: left;
+		width: 50%;
+		height: 300px;
+		background-color: skyblue;
+	}
+</style>
+```
+
+编写好的hi2.vue <br>
+```vue
+<template>
+	<div>
+		<h2>{{message}}</h2>
+	</div>
+</template>
+<script>
+	export default{
+		name:'hi2',
+		data(){
+			return{
+				message:"It's hi2 page"
+			}
+		}
+	}
+</script>
+<style scoped>
+	div {
+		float: left;
+		width: 50%;
+		height: 300px;
+		background-color: hotpink;
+	}
+</style>
+```
+最后在页面中就可以得到想要的效果，hi1和hi2页面都在页面下方，在左右两边分别展示出来。
+
+**改变path参数后对路由的控制：**<br>
+我们可以在index.js中对routes增加一个对象，来表示实现改变数值后对路由的控制。<br>
+例，在index.js中：<br>
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import hi1 from '@/components/hi1'
+import hi2 from '@/components/hi2'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      components:{
+      	default:HelloWorld,
+      	left:hi1,
+      	right:hi2
+      }
+    },
+    {
+      path: '/tianer',   //注意这边改变了path的值
+      name: 'HelloWorld',
+      components:{
+      	default:HelloWorld,
+      	left:hi2,
+      	right:hi1     //这边简单对调了一下hi1和hi2
+      }
+    }
+  ]
+})
+```
+这里改变的path的值，里面的/tianer的作用就是，可以在浏览器地址栏输入tianer，然后实现改变left和right对应的hi1和hi2的页面的改变。<br>
+输入完成后，页面发生的变化为：hi1和hi2相互交换了位置。<br>
+
+## 6-5、vue-router使用url进行参数的传递
+之前讲过使用vue-router进行传值，这次讲一种使用url传值的方法。<br>
+首先，创建一个params.vue页面，并且在index.js中声明这个组件。<br>
+例，在params.vue中：<br>
+```vue
+<template>
+	<div>
+		<h2>{{ message }}</h2>
+		<p>newsID:{{$route.params.newsId}}</p>
+		<p>newsName:{{$route.params.newsName}}</p>  //这里留着备用，用于之后接受参数并且显示
+	</div>
+</template>
+
+<script>
+	export default{
+		data(){
+			return{
+				message:"this is params page"
+			}
+		}
+	}
+</script>
+
+<style>
+	
+</style>
+```
+例，在index.js中声明组件：<br>
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import hi1 from '@/components/hi1'
+import hi2 from '@/components/hi2'
+import params from '@/components/params'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component:HelloWorld
+    },
+    {
+    	path:'/params/:newsId/:newsName',  //要注意这里开始使用一种新的传值方法，注意冒号！
+    	component:params
+    }
+  ]
+})
+```
+要注意在route第二个对象中，使用了一种新的传值的方法，path中不仅表达了params的路径，并且用了/:newsID/:newsName这种方式传递值。<br>
+这次我们实例，用newsID表示新闻号码，newsName表示新闻名字，要注意冒号的使用，这是格式。<br>
+然后在App.vue中使用router-link标签来传递值。<br>
+例，在App.vue中：
+```vue
+<template>
+  <div id="app">
+    <p><img src="./assets/logo.png"></p>
+    <router-link to="/">Home</router-link>
+    <router-link to="/params/as233/tianer">Params</router-link>    //注意这里传值的格式
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+```
+这里我们用了两个链接标签，一个是回到主页的Home，一个是进入到params页面的params，点击链接后还传入了值，使用的to来设置传入的值，对应设置好的参数。<br>
+然后点击params链接，就显示params内容，并且接收了值的传递。<br>
+
+**使用正则表达式来规定传值的格式：**<br>
+我们可以在index.js规定传值的格式，使用正则表达式来规定传值的格式。<br>
+例，在index.js中：
+```javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import hi1 from '@/components/hi1'
+import hi2 from '@/components/hi2'
+import params from '@/components/params'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component:HelloWorld
+    },
+    {
+    	path:'/params/:newsId(\\d+)/:newsName',   //要规定传值的格式，需要用括号，并且在里面规定
+    	component:params
+    }
+  ]
+})
+
+```
+要规定的格式就是，在要传入的值后面加入括号，里面使用正则表达式，例如```(\\d)```是表示只能传递数字。<br>
+如果传入的值有字母，那么点击链接就直接载入不了页面内容。<br>
