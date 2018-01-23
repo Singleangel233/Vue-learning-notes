@@ -576,4 +576,4 @@ export default {
 
 ```
 注意：在绑定的方法中，```this.$router.go()```方法是实现了跳转页面的功能。<br>
-在```this.$router.push()```方法中，push()的值为路径，跟path相似，可以实现跳转指定页面的效果<br>。
+在```this.$router.push()```方法中，push()的值为路径，跟path相似，可以实现跳转指定页面的效果。<br>
