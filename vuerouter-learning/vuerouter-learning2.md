@@ -511,3 +511,69 @@ next：在函数内必须写next()，只有执行了这个，才有页面内容�
 
 
 ## 6-11、vue-router编程式导航
+我们可以让页面中的组件绑定方法实现导航的效果，比如使用按钮，给它绑定一个内置方法来实现跳转页面的效果。<br>
+例，在App.vue中，我们使用三个按钮分别实现，后退，前进，返回首页的效果。<br>
+在App.vue中：<br>
+```vue
+<template>
+  <div id="app">
+    <p><img src="./assets/logo.png"></p>
+    <p><button @click="goBack">返回</button>
+    <button @click="goGo">前进</button>
+    <button @click="goHome">返回首页</button></p>    //这里使用了v-on来绑定方法
+    <router-link to="/">Home</router-link> |
+    <router-link to="/params/233/tianer">Params</router-link> |
+    <router-link to="/goHome">goHome</router-link>  |
+    <router-link to="/goParams/666/angel">goParams</router-link> |
+    <router-link to="/hi1">hi1</router-link> |
+    <router-link to="/tianer">tianer</router-link>
+    <router-link to="/2345678">错误实例</router-link>
+    <transition name="animate" mode="out-in">
+    <router-view></router-view>
+    </transition>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app',
+  methods:{
+      goBack(){
+        this.$router.go(-1);
+      },
+      goGo(){
+        this.$router.go(1);
+      },
+      goHome(){
+        this.$router.push('/');    //这里绑定了方法，这里有两种方法
+      }
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+.animate-enter{
+  opacity: 0;
+}
+.animate-enter-active{
+  transition: opacity .5s;
+}
+.animate-leave{
+  opacity: 1;
+}
+.animate-leave-active{
+  transition: opacity .5s;
+}
+</style>
+
+```
+注意：在绑定的方法中，```this.$router.go()```方法是实现了跳转页面的功能。<br>
+在```this.$router.push()```方法中，push()的值为路径，跟path相似，可以实现跳转指定页面的效果<br>。
