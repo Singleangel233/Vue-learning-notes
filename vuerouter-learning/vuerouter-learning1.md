@@ -281,9 +281,9 @@ export default new Router({
     	path:'/hi',
     	component:hi,
     	children:[
-    	{path:'/',name:'hi',component:hi},
-    	{path:'hi1',name:'hi下的hi1',component:hi1},
-    	{path:'hi2',name:'hi下的hi2',component:hi2}]
+    	{path:'/',component:hi}, 
+      {path:'hi1',component:hi1},
+      {path:'hi2',component:hi2}]   
     }
   ]
 })
@@ -300,7 +300,7 @@ export default new Router({
       <router-link to="/hi/hi1">hi页面1</router-link>  |
       <router-link to="/hi/hi2">hi页面2</router-link>
     </div>
-    <p>{{ $route.name}}</p>   //配合引用的关键，使用$route.name可以获取到index.js中的name属性
+    <p>{{$route.name}}</p>   //配合引用的关键，使用$route.name可以获取到index.js中的name属性
     <router-view/>
   </div>
 </template>
