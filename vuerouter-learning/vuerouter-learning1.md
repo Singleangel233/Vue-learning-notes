@@ -259,7 +259,7 @@ export default new Router({
 
 ### 第一种：使用name来传递参数
 如果需要传递参数，那么首先可以在index.js配置name属性的属性值。<br>
-例，在index中配置好HelloWorld组件的name值：<br>
+例，在index.js中配置好HelloWorld组件的name值：<br>
 ```javascript
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -274,7 +274,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',   //注意这里name的值是给了的
+      name: 'HelloWorld',   //注意是在这里配置name值
       component: HelloWorld
     },
     {
@@ -288,7 +288,8 @@ export default new Router({
   ]
 })
 ```
-然后在app.vue文件中，使用标签配置插值来引用：<br>
+然后在App.vue文件中，使用标签配置插值来引用。<br>
+例，在App.vue中：<br>
 ```vue
 <template>
   <div id="app">
