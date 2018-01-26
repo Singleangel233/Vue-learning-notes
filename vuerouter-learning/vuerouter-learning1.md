@@ -257,8 +257,8 @@ export default new Router({
 ## 6.3、参数传递
 参数传递一般是业务中的基础需求，然后我们需要一些参数传递才能达到目的。<br>
 
-###第一种：使用name来传递参数
-如果需要传递参数，那么首先可以在index.js配置name属性的属性值。
+### 第一种：使用name来传递参数
+如果需要传递参数，那么首先可以在index.js配置name属性的属性值。<br>
 例，在index中配置好HelloWorld组件的name值：<br>
 ```javascript
 import Vue from 'vue'
@@ -355,7 +355,7 @@ export default new Router({
 })
 ```
 
-###第二种：修改router-link标签来传递值
+### 第二种：修改router-link标签来传递值
 这种方法是修改了```<router-link></router-link>```标签中的属性。<br>
 例，我们要点击hi1链接中，传递一个userName和id的值。<br>
 在App.vue中：<br>
