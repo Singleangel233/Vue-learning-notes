@@ -481,3 +481,216 @@ import { mapState,mapMutations,mapGetters } from 'vuex';  //添加载入mapGette
 
 
 ## 7-5、actions异步修改状态
+在vuex中，actions可以达到异步方法的编写，它可以很简单地调用mutation里编写好了的方法，然后达到实现异步方法的效果。<br>
+说道异步与同步的区别：异步可以保持不同情况执行，同步则是一并执行。<br>
+在store.js中，编写actions来实现异步方法的编写。<br>
+例，在store.js中：
+```javascript
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
+const state={
+	count:3
+}
+
+const mutations={
+	add(state,n){
+		state.count+=n;
+	},
+	reduce(state){
+		state.count--;
+	}
+}
+
+const getters={
+	count:function(state){
+		return state.count+=10;
+	}
+}
+
+const actions={
+	addAction(context){
+		context.commit('add',10);
+		console.log('我已经被执行了');
+		setTimeout(()=>{context.commit('reduce')},2000); //这里使用了setTimeout方法，里面的匿名函数函数使用的ES6的箭头函数
+	},
+	reduceAction({commit}){
+		commit('reduce');
+	}
+} 							//这里加入了actions，声明的方式跟之前的属性相同
+
+export default new Vuex.Store({
+	state,
+	mutations,
+	getters,
+	actions
+})
+```
+注意：<br>
+1.跟其他属性声明方式相同，使用es6的const来声明。<br>
+2.在第一个addAction函数中，设置的context变量是默认存在的，这个变量的含义指的就是上下文。<br>
+3.为了调用mutations里面的方法，使用了```context.commit('add',10)```这种方式来调用，前面为方法名，后面为在add方法中定义的n。<br>
+4.第二个reduceAction函数中，设置的为{commit}参数，这个参数也是内置的参数，使用了这个参数，后面调用直接使用commit()调用就可以了。<br>
+5.设置完actions后，要在最后装载actions属性。<br>
+6.在setTimeout中，设置的是一个匿名函数，所以使用的是ES6的箭头函数来实现。<br>
+
+
+然后在Count.vue中配置好相应内容。<br>
+例，在Count.vue中：<br>
+```vue
+<template>
+	<div>
+		<h2>{{message}}</h2>
+		<hr/>
+		<h3>{{count}}</h3>
+		<p>
+			<button @click="$store.commit('add',10)">+</button >
+			<button @click="reduce">-</button>
+		</p>
+		<p>
+			<button @click="addAction">+action</button >
+			<button @click="reduceAction">-action</button>
+		</p>    //我们设置了一组新的标签来配置actions中方法的使用
+	</div>
+</template>
+
+<script>
+import store from '@/vuex/store';
+import { mapState,mapMutations,mapGetters,mapActions } from 'vuex';
+
+
+	export default {
+		data(){
+			return{
+				message:'hello,vuex'
+			}
+		},
+		computed:{
+			...mapState(['count']),
+			// ...mapGetters(['count'])
+		},
+		methods:{
+			...mapMutations(['add','reduce']),
+			...mapActions(['addAction','reduceAction'])  //这里也使用了扩展运算符
+		},
+		store
+	}
+</script>
+```
+注意：<br>
+1.这里使用v-on绑定了addAction和reduceAction方法。<br>
+2.在script标签中，加载了mapActions。<br>
+3.在methods属性中，使用扩展运算符```...```，可以同时在methods中实现mapMutation和mapAction两个内容。<br>
+
+
+## 7-7、module模块组
+module模块组的意义，主要用于很大型的项目当中，实际上项目小就不需要这个属性。<br>
+模块组主要整合了其它的属性，然后不需要在Vue.Store中声明属性，直接声明模块即可。<br>
+然后可以编写多个模块组件，然后加以声明使用。<br>
+例，这次使用模块组来整合之前编写好的属性。<br>
+在store.js中：<br>
+```javascript
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
+const state={
+	count:3
+}
+
+const mutations={
+	add(state,n){
+		state.count+=n;
+	},
+	reduce(state){
+		state.count--;
+	}
+}
+
+const getters={
+	count:function(state){
+		return state.count+=10;
+	}
+}
+
+const actions={
+	addAction(context){
+		context.commit('add',10);
+		console.log('我已经被执行了');
+		setTimeout(()=>{context.commit('reduce')},2000);
+	},
+	reduceAction({commit}){
+		commit('reduce');
+	}
+}
+
+const modulesA={
+	state,
+	mutations,
+	getters,
+	actions    //这里声明了一个modulesA属性用于整合所有属性
+}
+
+export default new Vuex.Store({
+	modules:{a:modulesA}      //这里的声明方式是使用modules属性值为一个对象
+})
+```
+注意：<br>
+这里声明格式里，modules的属性值为一个对象，对象里的属性a是任意起的一个名字，后面调用要用到，modelesA则是创建的模板组。<br>
+
+
+然后在Count.vue中要改变插值形式，才能正确读取，或者在computed中特别声明，就可以直接读取。<br>
+例，在Count.vue中：<br>
+```vue
+<template>
+	<div>
+		<h2>{{message}}</h2>
+		<hr/>
+		<h3>{{$store.state.a.count}}--{{count}}</h3>  //使用模块组的格式和特别声明后的格式
+		<p>
+			<button @click="$store.commit('add',10)">+</button >
+			<button @click="reduce">-</button>
+		</p>
+		<p>
+			<button @click="addAction">+action</button >
+			<button @click="reduceAction">-action</button>
+		</p>
+	</div>
+</template>
+
+<script>
+import store from '@/vuex/store';
+import { mapState,mapMutations,mapGetters,mapActions } from 'vuex';
+
+
+	export default {
+		data(){
+			return{
+				message:'hello,vuex'
+			}
+		},
+		computed:{
+			// ...mapState(['count']),
+			// ...mapGetters(['count'])
+			count(){
+				return this.$store.state.a.count   //这边使用了模块组特别声明，要注释掉之前声明的部分，然后这边单独声明
+			}
+		},
+		methods:{
+			...mapMutations(['add','reduce']),
+			...mapActions(['addAction','reduceAction'])
+		},
+		store
+	}
+</script>
+```
+注意：<br>
+1.当使用modules模块组后，插值的写法应该这样```{{$store.state.a.count}}```。<br>
+2.如果还是想用```{{count}}```来表示插值，那么需要在computed中特别声明。<br>
+例：<br>
+```
+count(){
+		return this.$store.state.a.count  
+		}
+```
